@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Зомби-апокалипсис: Деревня</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div id="game-container"></div>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const gameContainer = document.getElementById('game-container');
+    let player = { x: 200, y: 200, width: 50, height: 50 };
+    let zombieCount = 5;
+    let zombies = [];
+
+    // Создаём зомби
+    for (let i = 0; i < zombieCount; i++) {
+        zombies.push({
+            x: Math.random() * (gameContainer.clientWidth - 100) + 50,
+            y: Math.random() * (gameContainer.clientHeight - 100) + 50,
+            speed: 2
+        });
+    }
+
+    function updateGame() {
+        requestAnimationFrame(updateGame);
+
+        // Движение зомби
+        zombies.forEach(zombie => {
+            zombie.x += (player.x - zombie.x) * zombie.speed / 1000;
+            zombie.y += (player.y - zombie.y) * zombie.speed / 1000;
+            drawZombies();
+        });
+
+        // Отрисовка игрока
+        drawPlayer();
+    }
+
+    function drawZombies() {
+        zombies.forEach(zombie => {
+            let zombieElement = document.createElement('div');
+            zombieElement.className = 'zombie';
+            zombieElement.style.left = zombie.x + 'px';
+            zombieElement.style.top = zombie.y + 'px';
+            gameContainer.appendChild(zombieElement);
+        });
+    }
+
+    function drawPlayer() {
+        let playerElement = document.createElement('div');
+        playerElement.className = 'player';
+        playerElement.style.left = player.x + 'px';
+        playerElement.style.top = player.y + 'px';
+        gameContainer.appendChild(playerElement);
+    }
+
+    updateGame();
+});
+	
+	
+	
+	</script>
+</body>
+
+<style>
+#game-container {
+    width: 800px;
+    height: 600px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.zombie, .player {
+    width: 50px;
+    height: 50px;
+    background-color: #ff69b4; /* зомби */
+    border-radius: 10px;
+    position: absolute;
+}
+
+.player {
+    background-color: #4CAF50; /* игрок */
+}
+</style>
+</html>
